@@ -19,3 +19,4 @@ spec:
         image: 444444000111.dkr.ecr.eu-west-2.amazonaws.com/express:latest
         ports:
         - containerPort: 3000
+      imagePullPolicy: Always
