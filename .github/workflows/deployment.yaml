@@ -15,7 +15,7 @@ jobs:
     - name: Install kubectl
       uses: azure/setup-kubectl@v1
       with:
-        version: 'v1.22.6'
+        version: 'v1.21'
       id: install
 
     - name: Configure AWS credentials
@@ -32,14 +32,14 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: testDeployemtRepository
+        ECR_REPOSITORY: test-repo
         IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest ./application/
         docker push -a $ECR_REGISTRY/$ECR_REPOSITORY
 
     - name: Update kube config
-      run: aws eks update-kubeconfig --name simple-bank --region eu-west-1
+      run: aws eks update-kubeconfig --name test-cluster --region eu-west-1
 
     - name: Deploy image to Amazon EKS
       run: |
