@@ -12,7 +12,7 @@ resource "aws_default_subnet" "this" {
   }
 }
 
-data "aws_subnets" "example" {
+data "aws_subnets" "this" {
   filter {
     name   = "vpc-id"
     values = [aws_default_vpc.default.id]
@@ -103,7 +103,7 @@ resource "aws_security_group" "rds-sg" {
 
 resource "aws_db_subnet_group" "this" {
   name       = "db-sg"
-  subnet_ids = aws_subnets.example
+  subnet_ids = data.aws_subnets.this.ids
 }
 
 resource "aws_db_parameter_group" "this" {
@@ -117,7 +117,7 @@ resource "aws_db_parameter_group" "this" {
 }
 
 resource "aws_db_instance" "this" {
-  identifier             = "postgresDB"
+  identifier             = "postgresdb"
   instance_class         = "db.t3.micro"
   allocated_storage      = 5
   engine                 = "postgres"
