@@ -4,7 +4,7 @@ resource "aws_default_vpc" "default" {
   }
 }
 
-resource "aws_default_subnet" "default-az" {
+resource "aws_default_subnet" "this" {
   availability_zone = "eu-west-1a"
 
   tags = {
