@@ -12,6 +12,13 @@ resource "aws_default_subnet" "default-az" {
   }
 }
 
+data "aws_subnets" "example" {
+  filter {
+    name   = "vpc-id"
+    values = [aws_default_vpc.default.id]
+  }
+}
+
 resource "aws_security_group" "ec2-sg" {
   name        = "ec2-sg"
   description = "SSH and HTTPS access"
@@ -96,7 +103,7 @@ resource "aws_security_group" "rds-sg" {
 
 resource "aws_db_subnet_group" "this" {
   name       = "db-sg"
-  subnet_ids = aws_default_vpc.default.public_subnets
+  subnet_ids = aws_subnets.example
 }
 
 resource "aws_db_parameter_group" "this" {
